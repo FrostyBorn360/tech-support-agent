@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kb_articles>
+    <article id="TS-101">
+        <title>How to Reset User Password</title>
+        <category>Account Management</category>
+        <description>Steps to securely reset a user's Active Directory password.</description>
+        <solution>1. Verify identity. 2. Open AD Users and Computers. 3. Right-click user -> Reset Password. 4. Check 'User must change password at next logon'.</solution>
+    </article>
+    <article id="TS-102">
+        <title>Fixing VPN Connection Timeout</title>
+        <category>Networking</category>
+        <description>Troubleshooting steps for when the Cisco AnyConnect VPN times out.</description>
+        <solution>1. Check internet connection. 2. Flush DNS (ipconfig /flushdns). 3. Restart VPN service. 4. Verify MFA prompt approval.</solution>
+    </article>
+    <article id="TS-103">
+        <title>Blue Screen Error 0x0000003B</title>
+        <category>Hardware / OS</category>
+        <description>System Service Exception BSOD troubleshooting.</description>
+        <solution>1. Boot into Safe Mode. 2. Update display drivers. 3. Run sfc /scannow. 4. Check for recent Windows Updates.</solution>
+    </article>
+</kb_articles>

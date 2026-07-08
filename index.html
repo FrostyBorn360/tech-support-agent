@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Support Knowledge Base</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; }
+        h1 { color: #0056b3; }
+        .search-bar { margin-bottom: 20px; }
+        input[type="text"] { padding: 10px; width: 300px; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: 10px 15px; background-color: #0056b3; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        button:hover { background-color: #004494; }
+        .note { font-size: 0.9em; color: #d9534f; margin-top: 10px; max-width: 600px; }
+        #results { display: grid; gap: 15px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); margin-top: 20px; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-top: 4px solid #0056b3; }
+        .category { font-size: 0.85em; color: #777; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: block; }
+        .title { margin: 0 0 10px 0; font-size: 1.2em; color: #222; }
+        .desc { font-style: italic; color: #555; margin-bottom: 15px; }
+        .solution { background: #eef2f5; padding: 15px; border-left: 3px solid #0056b3; font-family: monospace; white-space: pre-wrap; border-radius: 0 4px 4px 0;}
+    </style>
+</head>
+<body>
+
+    <h1>Tech Support Knowledge Base</h1>
+    
+    <div class="search-bar">
+        <button onclick="loadXMLDoc()">Load XML Data</button>
+        <p class="note"><strong>Important Note:</strong> Because this HTML file fetches an external file, you cannot just double-click it to open it in a browser due to security restrictions (CORS). You must run it through a local web server (like VS Code's "Live Server" extension).</p>
+    </div>
+
+    <div id="results">
+        <!-- XML data will be injected here -->
+    </div>
+
+    <script>
+        function loadXMLDoc() {
+            // Fetch the external XML file
+            fetch('support_data.xml')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok. Are you running a local server?');
+                    }
+                    return response.text();
+                })
+                .then(str => (new window.DOMParser()).parseFromString(str, "text/xml"))
+                .then(data => displayData(data))
+                .catch(error => {
+                    document.getElementById("results").innerHTML = `<p style="color:red;"><strong>Error loading XML:</strong> ${error.message}</p>`;
+                });
+        }
+
+        function displayData(xml) {
+            const articles = xml.getElementsByTagName("article");
+            let html = "";
+
+            for (let i = 0; i < articles.length; i++) {
+                let id = articles[i].getAttribute("id");
+                let title = articles[i].getElementsByTagName("title")[0].textContent;
+                let category = articles[i].getElementsByTagName("category")[0].textContent;
+                let description = articles[i].getElementsByTagName("description")[0].textContent;
+                let solution = articles[i].getElementsByTagName("solution")[0].textContent;
+                
+                // Formatting the solution for better reading (putting numbers on new lines)
+                let formattedSolution = solution.replace(/(\d\.)/g, "\n$1").trim();
+
+                html += `
+                    <div class="card">
+                        <span class="category">${category} | ID: ${id}</span>
+                        <h2 class="title">${title}</h2>
+                        <p class="desc">${description}</p>
+                        <div class="solution">${formattedSolution}</div>
+                    </div>
+                `;
+            }
+
+            document.getElementById("results").innerHTML = html;
+        }
+    </script>
+</body>
+</html>
